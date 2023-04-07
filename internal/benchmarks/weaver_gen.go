@@ -4,6 +4,7 @@ package benchmarks
 import (
 	"context"
 	"fmt"
+	"github.com/ServiceWeaver/weaver"
 	"github.com/ServiceWeaver/weaver/runtime/codegen"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -549,8 +550,10 @@ func (s ping1_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -579,6 +582,7 @@ func (s ping1_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -605,8 +609,10 @@ func (s ping1_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -629,6 +635,7 @@ func (s ping1_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -661,8 +668,10 @@ func (s ping10_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -691,6 +700,7 @@ func (s ping10_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -717,8 +727,10 @@ func (s ping10_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -741,6 +753,7 @@ func (s ping10_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -773,8 +786,10 @@ func (s ping2_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -803,6 +818,7 @@ func (s ping2_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -829,8 +845,10 @@ func (s ping2_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -853,6 +871,7 @@ func (s ping2_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -885,8 +904,10 @@ func (s ping3_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -915,6 +936,7 @@ func (s ping3_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -941,8 +963,10 @@ func (s ping3_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -965,6 +989,7 @@ func (s ping3_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -997,8 +1022,10 @@ func (s ping4_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1027,6 +1054,7 @@ func (s ping4_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1053,8 +1081,10 @@ func (s ping4_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1077,6 +1107,7 @@ func (s ping4_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -1109,8 +1140,10 @@ func (s ping5_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1139,6 +1172,7 @@ func (s ping5_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1165,8 +1199,10 @@ func (s ping5_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1189,6 +1225,7 @@ func (s ping5_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -1221,8 +1258,10 @@ func (s ping6_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1251,6 +1290,7 @@ func (s ping6_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1277,8 +1317,10 @@ func (s ping6_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1301,6 +1343,7 @@ func (s ping6_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -1333,8 +1376,10 @@ func (s ping7_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1363,6 +1408,7 @@ func (s ping7_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1389,8 +1435,10 @@ func (s ping7_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1413,6 +1461,7 @@ func (s ping7_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -1445,8 +1494,10 @@ func (s ping8_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1475,6 +1526,7 @@ func (s ping8_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1501,8 +1553,10 @@ func (s ping8_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1525,6 +1579,7 @@ func (s ping8_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))
@@ -1557,8 +1612,10 @@ func (s ping9_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1587,6 +1644,7 @@ func (s ping9_client_stub) PingC(ctx context.Context, a0 payloadC, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingCMetrics.BytesReply.Put(float64(len(results)))
@@ -1613,8 +1671,10 @@ func (s ping9_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -1637,6 +1697,7 @@ func (s ping9_client_stub) PingS(ctx context.Context, a0 payloadS, a1 int) (r0 p
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.pingSMetrics.BytesReply.Put(float64(len(results)))

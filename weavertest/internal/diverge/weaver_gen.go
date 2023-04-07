@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/ServiceWeaver/weaver"
 	"github.com/ServiceWeaver/weaver/runtime/codegen"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -142,8 +143,10 @@ func (s errer_client_stub) Err(ctx context.Context, a0 int) (err error) {
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -170,6 +173,7 @@ func (s errer_client_stub) Err(ctx context.Context, a0 int) (err error) {
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.errMetrics.BytesReply.Put(float64(len(results)))
@@ -200,8 +204,10 @@ func (s failer_client_stub) ImJustHereSoWeaverGenerateDoesntComplain(ctx context
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -220,6 +226,7 @@ func (s failer_client_stub) ImJustHereSoWeaverGenerateDoesntComplain(ctx context
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, nil, shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.imJustHereSoWeaverGenerateDoesntComplainMetrics.BytesReply.Put(float64(len(results)))
@@ -250,8 +257,10 @@ func (s pointer_client_stub) Get(ctx context.Context) (r0 Pair, err error) {
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -270,6 +279,7 @@ func (s pointer_client_stub) Get(ctx context.Context) (r0 Pair, err error) {
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, nil, shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getMetrics.BytesReply.Put(float64(len(results)))

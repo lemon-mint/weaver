@@ -4,6 +4,7 @@ package adservice
 import (
 	"context"
 	"fmt"
+	"github.com/ServiceWeaver/weaver"
 	"github.com/ServiceWeaver/weaver/runtime/codegen"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -72,8 +73,10 @@ func (s t_client_stub) GetAds(ctx context.Context, a0 []string) (r0 []Ad, err er
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -95,6 +98,7 @@ func (s t_client_stub) GetAds(ctx context.Context, a0 []string) (r0 []Ad, err er
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getAdsMetrics.BytesReply.Put(float64(len(results)))

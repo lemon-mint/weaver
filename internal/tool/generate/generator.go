@@ -866,8 +866,10 @@ func (g *generator) generateClientStubs(p printFn) {
 			p(`		// Catch and return any panics detected during encoding/decoding/rpc.`)
 			p(`		if err == nil {`)
 			p(`			err = %s(recover())`, g.codegen().qualify("CatchPanics"))
+			p(`			if err != nil {`)
+			p(`				err = %s(%s, err)`, g.codegen().qualify("JoinErrors"), g.weaver().qualify("SystemError"))
+			p(`			}`)
 			p(`		}`)
-			p(`		err = s.stub.WrapError(err)`)
 			p(``)
 			p(`		if err != nil {`)
 			p(`			span.RecordError(err)`)
@@ -948,6 +950,7 @@ func (g *generator) generateClientStubs(p printFn) {
 			p(`	var results []byte`)
 			p(`	results, err = s.stub.Run(ctx, %d, %s, shardKey)`, methodIndex[m.Name()], data)
 			p(`	if err != nil {`)
+			p(`		err = %s(%s, err)`, g.codegen().qualify("JoinErrors"), g.weaver().qualify("SystemError"))
 			p(`		return`)
 			p(`	}`)
 			p(`	s.%sMetrics.BytesReply.Put(float64(len(results)))`, notExported(m.Name()))
@@ -1858,6 +1861,11 @@ func (g *generator) generateEncDecMethodsFor(p printFn, t types.Type) {
 	default:
 		panic(fmt.Sprintf("generateEncDecFor: unexpected type: %v", t))
 	}
+}
+
+// weaver imports and returns the weaver package.
+func (g *generator) weaver() importPkg {
+	return g.tset.importPackage(weaverPackagePath, "weaver")
 }
 
 // codegen imports and returns the codegen package.

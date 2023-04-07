@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/ServiceWeaver/weaver"
 	"github.com/ServiceWeaver/weaver/runtime/codegen"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -215,8 +216,10 @@ func (s imageScaler_client_stub) Scale(ctx context.Context, a0 []byte, a1 int, a
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -247,6 +250,7 @@ func (s imageScaler_client_stub) Scale(ctx context.Context, a0 []byte, a1 int, a
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.scaleMetrics.BytesReply.Put(float64(len(results)))
@@ -279,8 +283,10 @@ func (s localCache_client_stub) Get(ctx context.Context, a0 string) (r0 string, 
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -307,6 +313,7 @@ func (s localCache_client_stub) Get(ctx context.Context, a0 string) (r0 string, 
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getMetrics.BytesReply.Put(float64(len(results)))
@@ -333,8 +340,10 @@ func (s localCache_client_stub) Put(ctx context.Context, a0 string, a1 string) (
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -363,6 +372,7 @@ func (s localCache_client_stub) Put(ctx context.Context, a0 string, a1 string) (
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.putMetrics.BytesReply.Put(float64(len(results)))
@@ -396,8 +406,10 @@ func (s sQLStore_client_stub) CreateThread(ctx context.Context, a0 string, a1 ti
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -423,6 +435,7 @@ func (s sQLStore_client_stub) CreateThread(ctx context.Context, a0 string, a1 ti
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.createThreadMetrics.BytesReply.Put(float64(len(results)))
@@ -449,8 +462,10 @@ func (s sQLStore_client_stub) CreatePost(ctx context.Context, a0 string, a1 time
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -475,6 +490,7 @@ func (s sQLStore_client_stub) CreatePost(ctx context.Context, a0 string, a1 time
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.createPostMetrics.BytesReply.Put(float64(len(results)))
@@ -500,8 +516,10 @@ func (s sQLStore_client_stub) GetFeed(ctx context.Context, a0 string) (r0 []Thre
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -528,6 +546,7 @@ func (s sQLStore_client_stub) GetFeed(ctx context.Context, a0 string) (r0 []Thre
 	var results []byte
 	results, err = s.stub.Run(ctx, 2, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getFeedMetrics.BytesReply.Put(float64(len(results)))
@@ -554,8 +573,10 @@ func (s sQLStore_client_stub) GetImage(ctx context.Context, a0 string, a1 ImageI
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -584,6 +605,7 @@ func (s sQLStore_client_stub) GetImage(ctx context.Context, a0 string, a1 ImageI
 	var results []byte
 	results, err = s.stub.Run(ctx, 3, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getImageMetrics.BytesReply.Put(float64(len(results)))

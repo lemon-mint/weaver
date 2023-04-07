@@ -4,6 +4,7 @@ package productcatalogservice
 import (
 	"context"
 	"fmt"
+	"github.com/ServiceWeaver/weaver"
 	"github.com/ServiceWeaver/weaver/runtime/codegen"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -108,8 +109,10 @@ func (s t_client_stub) ListProducts(ctx context.Context) (r0 []Product, err erro
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -128,6 +131,7 @@ func (s t_client_stub) ListProducts(ctx context.Context) (r0 []Product, err erro
 	var results []byte
 	results, err = s.stub.Run(ctx, 1, nil, shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.listProductsMetrics.BytesReply.Put(float64(len(results)))
@@ -154,8 +158,10 @@ func (s t_client_stub) GetProduct(ctx context.Context, a0 string) (r0 Product, e
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -182,6 +188,7 @@ func (s t_client_stub) GetProduct(ctx context.Context, a0 string) (r0 Product, e
 	var results []byte
 	results, err = s.stub.Run(ctx, 0, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.getProductMetrics.BytesReply.Put(float64(len(results)))
@@ -208,8 +215,10 @@ func (s t_client_stub) SearchProducts(ctx context.Context, a0 string) (r0 []Prod
 		// Catch and return any panics detected during encoding/decoding/rpc.
 		if err == nil {
 			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = codegen.JoinErrors(weaver.SystemError, err)
+			}
 		}
-		err = s.stub.WrapError(err)
 
 		if err != nil {
 			span.RecordError(err)
@@ -236,6 +245,7 @@ func (s t_client_stub) SearchProducts(ctx context.Context, a0 string) (r0 []Prod
 	var results []byte
 	results, err = s.stub.Run(ctx, 2, enc.Data(), shardKey)
 	if err != nil {
+		err = codegen.JoinErrors(weaver.SystemError, err)
 		return
 	}
 	s.searchProductsMetrics.BytesReply.Put(float64(len(results)))
