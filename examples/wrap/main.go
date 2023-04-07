@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/ServiceWeaver/weaver"
 )
@@ -74,8 +75,30 @@ func main() {
 		fmt.Fprint(w, styleCss)
 	})
 	mux.HandleFunc("/wrap", func(w http.ResponseWriter, r *http.Request) {
-		// TODO(mwhittaker): Take n as a parameter.
-		wrapped, err := wrapper.Wrap(r.Context(), r.URL.Query().Get("s"), 80)
+		// Parse n.
+		n := 80
+		if nstring := r.URL.Query().Get("n"); nstring != "" {
+			var err error
+			n, err = strconv.Atoi(nstring)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+		if n <= 0 {
+			http.Error(w, fmt.Sprintf("invalid n: %d", n), http.StatusBadRequest)
+			return
+		}
+
+		// Parse s.
+		s := r.URL.Query().Get("s")
+		if len(s) > 10000 {
+			http.Error(w, fmt.Sprintf("s too big: %d", len(s)), http.StatusBadRequest)
+			return
+		}
+
+		// Wrap s.
+		wrapped, err := wrapper.Wrap(r.Context(), s, n)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

@@ -20,15 +20,23 @@
 'use strict';
 
 async function wrap(s, n) {
-  const response = await fetch(`/wrap?s=${encodeURIComponent(s)}`);
+  const response = await fetch(`/wrap?s=${encodeURIComponent(s)}&n=${n}`);
   return await response.text();
 }
 
 function main() {
+  const n = document.getElementById('n');
   const unwrapped = document.getElementById('unwrapped');
   const wrapped = document.getElementById('wrapped');
+  n.addEventListener('change', () => {
+    wrapped.style.width = `${n.value}ch`;
+    wrap(unwrapped.value, n.value).then((s) => {
+      wrapped.innerHTML = s;
+    });
+  });
   unwrapped.addEventListener('input', () => {
-    wrap(unwrapped.value, 80).then((s) => {
+    console.log(n.value);
+    wrap(unwrapped.value, n.value).then((s) => {
       wrapped.innerHTML = s;
     });
   });
